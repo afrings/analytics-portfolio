@@ -569,9 +569,7 @@ h4 {
     transition: transform 0.5s ease;
 }
 
-.project-layout:hover .project-image-placeholder {
-    transform: scale(1.03);
-}
+/* Removed zoom effect on hover */
 
 .project-content {
     padding: 3rem;
