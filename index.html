@@ -35,7 +35,6 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
-                <li><a href="#about">About</a></li>
                 <li><a href="#contact" class="btn-primary-outline">Contact Me</a></li>
             </ul>
             <div class="hamburger">
@@ -45,24 +44,35 @@
     </nav>
 
     <main>
-        <!-- Home / Hero Section -->
+        <!-- Home / About Section -->
         <section id="home" class="hero section-padding">
-            <div class="container hero-content">
-                <div class="hero-text reveal">
-                    <p class="greeting">Hi, I'm <span class="highlight-text">Austin</span></p>
-                    <h1 class="hero-title">Data <span class="highlight-text">Analyst</span> & <br /> Problem Solver.
-                    </h1>
-                    <p class="hero-subtitle">I transform complex data into actionable insights through Machine Learning,
-                        Statistical Analysis, and clear Visualization.</p>
-
-                    <div class="hero-cta">
-                        <a href="#projects" class="btn-primary">View My Work <i class="ph ph-arrow-right"></i></a>
-                        <div class="social-links">
-                            <a href="https://www.linkedin.com/in/austinwfrings/" target="_blank"
-                                aria-label="LinkedIn"><i class="ph ph-linkedin-logo"></i></a>
-                            <a href="Resume - 2026.pdf" target="_blank" aria-label="Resume"><i
-                                    class="ph ph-file-pdf"></i></a>
+            <div class="container">
+                <div class="glass-card about-card auto-grid reveal">
+                    <div class="about-text" style="display: flex; flex-direction: column; justify-content: center;">
+                        <h1 class="section-title" style="margin-bottom: 2rem;">Hi, I'm <span
+                                class="highlight-text">Austin Frings</span></h1>
+                        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem;">I am a
+                            detail-oriented Data Analyst with a passion for transforming raw data into meaningful
+                            stories. With a background in [Your Field/Degree], I specialize in building predictive
+                            models,
+                            automating ETL pipelines, and delivering insights that drive strategy.</p>
+                        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2rem;">When I'm not
+                            cleaning messy datasets or tuning hyperparameters, you can find me [Your Hobby 1],
+                            [Your Hobby 2], or reading about the latest AI trends.</p>
+                        <div class="hero-cta" style="justify-content: flex-start; margin-top: 1rem;">
+                            <a href="#projects" class="btn-primary">View My Work <i class="ph ph-arrow-down"></i></a>
+                            <div class="social-links">
+                                <a href="https://www.linkedin.com/in/austinwfrings/" target="_blank"
+                                    aria-label="LinkedIn"><i class="ph ph-linkedin-logo"></i></a>
+                                <a href="Resume - 2026.pdf" target="_blank" aria-label="Resume"><i
+                                        class="ph ph-file-pdf"></i></a>
+                            </div>
                         </div>
+                    </div>
+                    <div class="about-image-wrapper reveal delay-1">
+                        <img src="person_pictures/Professional_Headshot.png" alt="Austin Frings - Professional Headshot"
+                            class="about-image" />
+                        <div class="image-decoration"></div>
                     </div>
                 </div>
             </div>
@@ -202,34 +212,44 @@
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="section-padding container reveal">
-            <div class="glass-card about-card auto-grid">
-                <div class="about-text">
-                    <h2 class="section-title">About <span class="highlight-text">Me</span></h2>
-                    <p>I am a detail-oriented Data Analyst with a passion for transforming raw data into meaningful
-                        stories. With a background in [Your Field/Degree], I specialize in building predictive models,
-                        automating ETL pipelines, and delivering insights that drive strategy.</p>
-                    <p>When I'm not cleaning messy datasets or tuning hyperparameters, you can find me [Your Hobby 1],
-                        [Your Hobby 2], or reading about the latest AI trends.</p>
+        <!-- Contact / CTA Section -->
+        <section id="contact" class="section-padding container reveal">
+            <div class="glass-card"
+                style="padding: 3rem; display: flex; flex-direction: column; gap: 3rem; align-items: center;">
+                <div class="about-image-wrapper" style="max-width: 900px; aspect-ratio: 16/9;">
+                    <img src="person_pictures/poster_showcase.jpg" alt="Austin Frings - Poster Showcase"
+                        class="about-image" />
+                    <div class="image-decoration" style="top: -20px; left: -20px;"></div>
                 </div>
-                <!-- Profile Image Placeholder -->
-                <div class="about-image-wrapper">
-                    <div class="profile-placeholder">
-                        <i class="ph ph-user ph-4x"></i>
+
+                <div class="contact-text text-center" style="max-width: 800px;">
+                    <p class="greeting" style="font-size: 1.5rem; margin-bottom: 1.5rem;">Let's <span
+                            class="highlight-text">Connect</span></p>
+
+                    <p class="hero-subtitle"
+                        style="font-size: 1.4rem; color: var(--text-primary); margin-bottom: 1.5rem;">
+                        I transform complex data into actionable insights through Machine Learning, Statistical
+                        Analysis,
+                        and clear Visualization.
+                    </p>
+
+                    <p class="contact-subtitle" style="font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.8;">
+                        I'm currently looking for new opportunities. Whether you have a question or just want to say hi,
+                        my inbox is open!
+                    </p>
+
+                    <div class="hero-cta" style="justify-content: center;">
+                        <a href="mailto:austin.frings@gmail.com" class="btn-primary contact-btn">Say Hello <i
+                                class="ph ph-paper-plane-tilt"></i></a>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/austinwfrings/" target="_blank"
+                                aria-label="LinkedIn"><i class="ph ph-linkedin-logo"></i></a>
+                            <a href="Resume - 2026.pdf" target="_blank" aria-label="Resume"><i
+                                    class="ph ph-file-pdf"></i></a>
+                        </div>
                     </div>
-                    <div class="image-decoration"></div>
                 </div>
             </div>
-        </section>
-
-        <!-- Contact / CTA Section -->
-        <section id="contact" class="section-padding container text-center reveal">
-            <h2 class="section-title">Let's <span class="highlight-text">Connect</span></h2>
-            <p class="contact-subtitle">I'm currently looking for new opportunities. Whether you have a question or just
-                want to say hi, my inbox is open!</p>
-            <a href="mailto:austin.frings@gmail.com" class="btn-primary contact-btn">Say Hello <i
-                    class="ph ph-paper-plane-tilt"></i></a>
         </section>
 
     </main>
