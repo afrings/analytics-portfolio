@@ -108,4 +108,52 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+    /* ==========================================
+       Image Modal Overlay Logic
+       ========================================== */
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-image');
+    const closeBtn = document.querySelector('.image-modal-close');
+    const clickableImages = document.querySelectorAll('.clickable-image');
+
+    if (modal && modalImg && closeBtn) {
+        // Open modal on image click
+        clickableImages.forEach(img => {
+            img.addEventListener('click', function () {
+                modal.style.display = "flex";
+                // Slight delay to allow display flex to apply before opacity transition
+                setTimeout(() => {
+                    modal.classList.add('show');
+                }, 10);
+                modalImg.src = this.src;
+            });
+        });
+
+        // Close functions
+        const closeModal = () => {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = "none";
+                modalImg.src = ""; // Clear src when closed
+            }, 400); // Matches normal CSS transition length
+        };
+
+        // Close on X click
+        closeBtn.addEventListener('click', closeModal);
+
+        // Close on background click
+        modal.addEventListener('click', function (e) {
+            if (e.target !== modalImg) {
+                closeModal();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === "Escape" && modal.classList.contains('show')) {
+                closeModal();
+            }
+        });
+    }
+
 });
