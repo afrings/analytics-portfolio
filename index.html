@@ -15,7 +15,7 @@
         rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=1.1">
 
     <!-- Icons (Phosphor Icons) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -102,7 +102,7 @@
                     <div class="skill-icon-wrapper"><i class="ph ph-brain"></i></div>
                     <h3>Machine Learning</h3>
                     <ul class="skill-list">
-                        <li><span>Natural Language Processing</span> <span class="skill-bar"></span></li>
+                        <li><span>Computer Vision</span> <span class="skill-bar"></span></li>
                         <li><span>Generative AI</span> <span class="skill-bar"></span></li>
                         <li><span>Statistical Analysis</span> <span class="skill-bar"></span></li>
                     </ul>
@@ -132,14 +132,14 @@
             <div class="project-filters">
                 <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="ml">Machine Learning</button>
-                <button class="filter-btn" data-filter="nlp">NLP</button>
+                <button class="filter-btn" data-filter="cv">Computer Vision</button>
                 <button class="filter-btn" data-filter="viz">Visualization</button>
             </div>
 
             <div class="projects-list">
 
                 <!-- Project 1: Food Pantry Forecasting -->
-                <div class="project-layout" data-category="ml">
+                <div class="project-layout" data-category="ml viz">
                     <div class="project-image-wrapper">
                         <img src="projects/food_pantry/food_pantry_forecasts.png"
                             class="project-image-placeholder clickable-image"
@@ -165,7 +165,7 @@
                 </div>
 
                 <!-- Project 2: Cat Pose Estimation -->
-                <div class="project-layout" data-category="ml">
+                <div class="project-layout" data-category="cv ml">
                     <div class="project-image-wrapper">
                         <img src="personal_pictures/ai_edited_cat_annotation_cropped.png"
                             class="project-image-placeholder clickable-image"
@@ -178,8 +178,15 @@
                             <span class="tag">Computer Vision</span>
                             <span class="tag">PyTorch</span>
                         </div>
-                        <h3 class="project-title">YOLOv8 Cat Pose Estimation</h3>
-                        <p class="project-description">Fine-tuned a lightweight YOLOv8 nano model on the AP-10K dataset to map 17-point skeletal structures onto cats. Achieved ~92% mAP50 while maintaining edge-device compatibility, and utilized intense augmentations for real-world robustness.</p>
+                        <h3 class="project-title">WIP: YOLOv8 Fine-Tuning For Cat Pose Estimation</h3>
+                        <p class="project-description">This project adapts a fast, lightweight tracking model (YOLOv8 Nano), originally designed for human poses, to identify and track a 17-point skeleton on cats. The model is optimized to process video in real-time on low-power edge devices.</p>
+                        
+                        <div class="read-more-content" style="display: none;">
+                            <p class="project-description">To teach the model feline anatomy, a public animal dataset was filtered down to 1,862 images of cats. The model was trained on these images, followed by a second training phase where the data was intentionally distorted by rotating the images, altering lighting, and hiding parts of the subjects. This process forces the model to recognize skeletal structures in challenging conditions, rather than relying on perfect visibility.</p>
+                            <p class="project-description" style="margin-bottom: 0;">Currently, the model struggles with non-standard camera angles, such as a top-down view from a ceiling camera, because the original training data consists primarily of eye-level photos. To resolve this, the next step involves processing custom top-down video footage through the current model to automatically track the skeletons. Any tracking errors will be manually corrected, and this corrected data will be used to retrain the model and improve its performance across diverse perspectives. <br><br>The long term goal for this project is to use the fine-tuned model to control a laser pointer to automatically play with my cats.</p><p></p>
+                        </div>
+                        <button class="read-more-btn">Read More <i class="ph ph-caret-down"></i></button>
+
                         <div class="project-links">
                             <a href="projects/cat_pose/train_yolo.py" target="_blank" class="btn-text">View Code <i class="ph ph-arrow-up-right"></i></a>
                             <a href="https://github.com/austi/cat-pose-estimation" target="_blank" class="btn-icon"><i class="ph ph-github-logo"></i></a>
@@ -275,7 +282,7 @@
         <img class="image-modal-content" id="modal-image" src="" alt="Enlarged Poster">
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=1.2"></script>
 </body>
 
 </html>

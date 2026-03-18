@@ -91,7 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const filterValue = btn.getAttribute('data-filter');
 
             projects.forEach(project => {
-                if (filterValue === 'all' || project.getAttribute('data-category') === filterValue) {
+                const categories = project.getAttribute('data-category').split(' ');
+                if (filterValue === 'all' || categories.includes(filterValue)) {
                     project.style.display = 'flex';
                     // Re-trigger animation by resetting opacity
                     project.style.animation = 'none';
@@ -108,6 +109,27 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    /* ==========================================
+       Read More Button Toggle
+       ========================================== */
+    const readMoreBtns = document.querySelectorAll('.read-more-btn');
+
+    readMoreBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const content = this.previousElementSibling;
+            const icon = this.querySelector('i');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                this.innerHTML = 'Read Less <i class="ph ph-caret-up"></i>';
+            } else {
+                content.style.display = 'none';
+                this.innerHTML = 'Read More <i class="ph ph-caret-down"></i>';
+            }
+        });
+    });
+
     /* ==========================================
        Image Modal Overlay Logic
        ========================================== */
