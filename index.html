@@ -194,25 +194,31 @@
                     </div>
                 </div>
 
-                <!-- Project 3 (Template) -->
-                <div class="project-layout" data-category="viz">
+                <!-- Project 3: Polymarket Whale Monitor & Trade Clustering -->
+                <div class="project-layout" data-category="ml viz">
                     <div class="project-image-wrapper">
-                        <div class="project-image-placeholder"
-                            style="background: linear-gradient(45deg, #1e293b, #0f172a);">
-                            <i class="ph ph-chart-pie ph-4x" style="color: rgba(255,255,255,0.2);"></i>
-                        </div>
+                        <img src="personal_pictures/polymarket_clustering.png"
+                            class="project-image-placeholder clickable-image"
+                            style="object-fit: cover; width: 100%; height: 100%; min-height: 350px; cursor: pointer;"
+                            alt="Polymarket Clustering Scatter Plot" />
                     </div>
                     <div class="project-content">
                         <div class="project-tags">
-                            <span class="tag">Tableau</span>
-                            <span class="tag">SQL</span>
+                            <span class="tag">Python</span>
+                            <span class="tag">Scikit-Learn</span>
+                            <span class="tag">Web3</span>
                         </div>
-                        <h3 class="project-title">[Project 3 Title]</h3>
-                        <p class="project-description">A brief description of the project. E.g. Interactive dashboard
-                            analyzing regional sales performance and customer churn demographics.</p>
+                        <h3 class="project-title">Polymarket Whale Monitor & Trade Clustering</h3>
+                        <p class="project-description">A Python toolkit that monitors large trades on Polymarket in real time and applies unsupervised machine learning to discover behavioral patterns in prediction market activity. The whale monitor polls Polymarket's API, flags high-value trades, checks wallet age on the Polygon blockchain, and sends instant Telegram alerts.</p>
+
+                        <div class="read-more-content" style="display: none;">
+                            <p class="project-description">The cluster analysis pipeline collected 6,500 transactions and enriched each trade with derived features including USD value, topic classification, account nonce, and market popularity. After standardizing features, K-Means clustering (k=4) revealed four distinct behavioral groups that mapped almost perfectly to topic categories — without being told to separate by topic.</p>
+                            <p class="project-description" style="margin-bottom: 0;">Key findings: Crypto dominated volume at 58% of trades but averaged only $13.80 per bet (micro-bets on short-term price movements). Sports bettors spent roughly 12× more at $175.66 per trade. Political bettors exploited near-certainties with an average odds of 91.4%, harvesting small guaranteed returns. Individual whale trades exceeding $80,000 were observed across all categories.</p>
+                        </div>
+                        <button class="read-more-btn">Read More <i class="ph ph-caret-down"></i></button>
+
                         <div class="project-links">
-                            <a href="#" class="btn-text">View Dashboard <i class="ph ph-arrow-up-right"></i></a>
-                            <a href="#" class="btn-icon"><i class="ph ph-github-logo"></i></a>
+                            <a href="projects/polymarket/polymarket write up.txt" target="_blank" class="btn-text">View Write-Up <i class="ph ph-arrow-up-right"></i></a>
                         </div>
                     </div>
                 </div>

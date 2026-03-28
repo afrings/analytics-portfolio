@@ -1,0 +1,163 @@
+# Polymarket Whale Monitor & Trade Clustering
+
+A Python toolkit for monitoring large trades on [Polymarket](https://polymarket.com) and applying unsupervised machine learning to discover behavioral patterns in prediction market activity.
+
+## Features
+
+### Real-Time Whale Monitor (`off_chain_monitor.py`)
+- **Live Trade Streaming** — Polls Polymarket's Data API for the latest activity every 15 seconds
+- **Whale Filtering** — Flags trades above a configurable USD threshold (default: $5,000)
+- **New Account Detection** — Checks wallet activity on the Polygon blockchain to identify fresh accounts
+- **Sports Bet Filtering** — Automatically excludes sports betting noise using slug/keyword heuristics
+- **Odds Filtering** — Ignores high-odds "safe" bets (>90%) to reduce spam
+- **Telegram Alerts** — Sends instant push notifications with market details, bet value, odds, and a Polygonscan link
+- **Crash Reporting** — Logs exceptions to `crash.log` and sends stack traces to Telegram
+- **Premium CLI** — Beautiful terminal output using `rich`
+
+### Trade Clustering Analysis (`cluster_analysis.py`)
+- **Extended Data Collection** — Polls and records all trades for a configurable duration (default: 24 hours)
+- **Feature Extraction** — Enriches each trade with derived features (USD value, topic classification, account nonce, market popularity)
+- **Topic Classification** — Categorizes markets into Sports, Politics, Crypto, or Other using keyword heuristics
+- **K-Means Clustering** — Applies unsupervised machine learning to discover natural behavioral groupings
+- **Concurrent Wallet Lookups** — Uses a ThreadPoolExecutor to parallelize account nonce API calls
+- **Visualization** — Generates a scatter plot of Value vs. Odds colored by cluster assignment
+
+## Installation
+
+1. Clone the repository and create a virtual environment:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install web3 requests rich python-dotenv pandas scikit-learn matplotlib
+   ```
+
+3. Create a `.env` file with your configuration:
+   ```env
+   BET_THRESHOLD_USD=5000
+   NEW_ACCOUNT_NONCE_THRESHOLD=5
+   MAX_ODDS_THRESHOLD=0.90
+   POLL_INTERVAL=15
+   POLYGON_RPC=https://polygon-rpc.com
+   TELEGRAM_BOT_TOKEN=your_token_here
+   TELEGRAM_CHAT_ID=your_chat_id_here
+   ```
+
+### Telegram Setup
+1. Message [@BotFather](https://t.me/botfather) on Telegram to create a bot and get your **Bot Token**
+2. Message [@userinfobot](https://t.me/userinfobot) to get your **Chat ID**
+3. Run `python test_telegram.py` to verify your setup
+
+## Usage
+
+### Whale Monitor
+```bash
+python off_chain_monitor.py
+```
+
+### Cluster Analysis
+```bash
+# Collect trades for 24 hours (default) and cluster
+python cluster_analysis.py
+
+# Collect for a custom duration (in seconds)
+python cluster_analysis.py --duration 3600    # 1 hour
+python cluster_analysis.py --duration 86400   # 24 hours
+
+# Run in the background for long collection periods
+nohup python -u cluster_analysis.py > collection.log 2>&1 &
+tail -f collection.log   # Monitor progress
+```
+
+### Running as a System Service
+A systemd service file is included for running the whale monitor as a daemon:
+```bash
+sudo cp polymonitor.service /etc/systemd/system/
+sudo systemctl enable polymonitor
+sudo systemctl start polymonitor
+```
+
+## How It Works
+
+### Whale Monitor
+1. The script polls Polymarket's `/trades` endpoint for the latest activity
+2. For each trade above the dollar threshold, it checks if the trade is a BUY, filters out sports bets and high-odds spam
+3. It queries the Polygon blockchain for the proxy wallet's transaction count
+4. If the account has fewer actions than the threshold, it's flagged as a "New Account Large Bet" and a Telegram alert is sent
+
+### Cluster Analysis Pipeline
+
+```
+Polymarket REST API ──► Data Collector ──► trades_dataset.csv
+     (/trades)              │
+                            │ ThreadPoolExecutor
+Activity API ───────────────┘      (20 workers)
+  (/activity)
+
+trades_dataset.csv ──► Feature Engineering ──► StandardScaler ──► K-Means (k=4)
+                           (pandas)              (sklearn)          │
+                                                                    ├──► clustered_trades.csv
+                                                                    └──► clusters.png
+```
+
+1. **Polling:** The script polls the trades endpoint every 5 seconds. Due to Polymarket's ~60-second Cloudflare cache, new data arrives in bursts of ~500 trades per minute
+2. **Deduplication:** Each trade's `transactionHash` is tracked in memory. Only unseen transactions are written to the CSV
+3. **Feature Extraction:** Each trade is enriched with: USD value (`size × price`), buy/sell encoding, topic classification, wallet nonce (account age), and market popularity (trade frequency per market)
+4. **Topic Classification:** A keyword-based heuristic classifier categorizes trades:
+   - **Sports** — Slug prefixes (`nba-`, `nfl-`, `ufc-`, etc.), keywords (` spread`, ` moneyline`), date patterns
+   - **Politics** — Keywords (`election`, `president`, `senate`, `trump`, `biden`)
+   - **Crypto** — Keywords (`bitcoin`, `ethereum`, `btc`, `eth`, `solana`)
+   - **Other** — Weather, world events, entertainment, etc.
+5. **Clustering:** Features are standardized (zero mean, unit variance) and fed into K-Means with 4 clusters
+
+## Initial Results
+
+Analysis of **6,500 transactions** collected during testing revealed four distinct behavioral clusters:
+
+| Cluster | Topic | Trades | Avg Bet Value | Avg Odds | Profile |
+|---------|-------|--------|---------------|----------|---------|
+| 0 | Crypto | 3,793 (58%) | $13.80 | 53.5% | High-frequency, low-value micro-bets on short-term price movements |
+| 1 | Other | 976 (15%) | $76.27 | 64.7% | Medium-conviction bets on weather, world events, miscellaneous |
+| 2 | Sports | 1,192 (18%) | $175.66 | 55.2% | Highest average bet value — traditional sports bettors |
+| 3 | Politics | 539 (8%) | $89.22 | 91.4% | High-confidence bets at extreme odds, harvesting near-certain returns |
+
+### Key Insights
+
+1. **Topic is the dominant separator** — The algorithm produced a near-perfect 1:1 mapping between clusters and topic categories without being told to separate by topic
+2. **Crypto dominates volume but not value** — 58% of trades but only $13.80 average (mostly "Bitcoin Up or Down in 5 minutes" micro-bets)
+3. **Sports bettors spend the most** — $175.66 average, roughly 12× the average crypto trade
+4. **Political bettors exploit near-certainties** — 91.4% average odds indicates "No" bets on long-shot candidates at 99% implied probability for small guaranteed returns
+5. **Whale outliers exist across all categories** — Individual trades exceeding $80,000 were observed, primarily in the high-odds region
+
+## File Structure
+
+```
+polymonitor/
+├── .env                    # API keys and configuration
+├── .venv/                  # Python virtual environment
+├── off_chain_monitor.py    # Real-time whale alert bot
+├── cluster_analysis.py     # Data collection + K-Means pipeline
+├── test_telegram.py        # Telegram integration test script
+├── polymonitor.service     # systemd service file
+├── trades_dataset.csv      # Raw collected trade data
+├── clustered_trades.csv    # Analysis output with cluster labels
+├── clusters.png            # Cluster visualization
+├── collection.log          # Background collection progress log
+├── crash.log               # Error/crash log
+└── README.md               # This file
+```
+
+## Dependencies
+
+| Package | Purpose |
+|---------|---------|
+| `web3` | Polygon blockchain interaction |
+| `requests` | HTTP client for Polymarket APIs |
+| `rich` | Premium terminal UI |
+| `python-dotenv` | Environment variable management |
+| `pandas` | Data manipulation and feature engineering |
+| `scikit-learn` | K-Means clustering and feature scaling |
+| `matplotlib` | Data visualization |
